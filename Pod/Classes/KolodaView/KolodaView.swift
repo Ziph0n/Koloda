@@ -531,7 +531,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
         }
         
         if currentCardIndex == 0 {
-            clear()
+            //clear()
         }
         
         countOfCards = Int(numberOfCards)
