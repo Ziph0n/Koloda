@@ -53,7 +53,7 @@ public protocol KolodaViewDelegate: class {
     func kolodaSwipeThresholdRatioMargin(_ koloda: KolodaView) -> CGFloat?
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int)
     func koloda(_ koloda: KolodaView, shouldDragCardAt index: Int ) -> Bool
-    
+    func koloda(_ koloda: KolodaView, wasDraggedAtPercentage percentage: CGFloat)
 }
 
 public extension KolodaViewDelegate {
@@ -71,11 +71,12 @@ public extension KolodaViewDelegate {
     func kolodaSwipeThresholdRatioMargin(_ koloda: KolodaView) -> CGFloat? { return nil}
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {}
     func koloda(_ koloda: KolodaView, shouldDragCardAt index: Int ) -> Bool { return true }
-    
+    func koloda(_ koloda: KolodaView, wasDraggedAtPercentage percentage: CGFloat) {}
+
 }
 
 open class KolodaView: UIView, DraggableCardDelegate {
-
+    
     //Opacity values
     public var alphaValueOpaque = defaultAlphaValueOpaque
     public var alphaValueTransparent = defaultAlphaValueTransparent
@@ -296,6 +297,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
         swipedAction(direction)
     }
     
+    
     func card(cardWasReset card: DraggableCardView) {
         if visibleCards.count > 1 {
             animating = true
@@ -340,6 +342,10 @@ open class KolodaView: UIView, DraggableCardDelegate {
 
     func card(cardSwipeSpeed card: DraggableCardView) -> DragSpeed {
         return dataSource?.kolodaSpeedThatCardShouldDrag(self) ?? DragSpeed.default
+    }
+    
+    func card(cardWasDraggedAtPercentage percentage: CGFloat) {
+        delegate?.koloda(self, wasDraggedAtPercentage: percentage)
     }
     
     // MARK: Private

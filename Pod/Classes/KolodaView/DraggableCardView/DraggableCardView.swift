@@ -27,6 +27,7 @@ protocol DraggableCardDelegate: class {
     func card(cardAllowedDirections card: DraggableCardView) -> [SwipeResultDirection]
     func card(cardShouldDrag card: DraggableCardView) -> Bool
     func card(cardSwipeSpeed card: DraggableCardView) -> DragSpeed
+    func card(cardWasDraggedAtPercentage percentage: CGFloat)
 }
 
 //Drag animation constants
@@ -259,6 +260,8 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
                 //100% - for proportion
                 delegate?.card(self, wasDraggedWithFinishPercentage: min(fabs(100 * percentage), 100), inDirection: dragDirection)
             }
+            
+            delegate?.card(cardWasDraggedAtPercentage: percentage)
             
         case .ended:
             swipeMadeAction()
